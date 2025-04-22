@@ -1,43 +1,40 @@
-# Kevo Python SDK
+# 🔑 Python-Kevo
 
-Python client for the Kevo key-value store.
+[![PyPI version](https://img.shields.io/pypi/v/python-kevo.svg)](https://pypi.org/project/python-kevo/)
+[![Python versions](https://img.shields.io/pypi/pyversions/python-kevo.svg)](https://pypi.org/project/python-kevo/)
+[![License](https://img.shields.io/github/license/KevoDB/python-sdk.svg)](LICENSE)
 
-## Installation
+High-performance Python client for the [Kevo](https://github.com/KevoDB/kevo) key-value store.
 
-### From Source
+## ✨ Features
+
+- Simple and intuitive API
+- Efficient binary protocol (gRPC)
+- Transaction support
+- Range and prefix scans
+- Batch operations
+
+## 🚀 Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/jeremytregunna/kevo.git
-cd kevo/python-sdk
-
-# Install using Poetry
-make install
+pip install python-kevo
 ```
 
-### Using pip
+Or install from source:
 
 ```bash
-pip install kevo
+git clone https://github.com/KevoDB/python-sdk.git
+cd python-sdk
+poetry install
 ```
 
-## Getting Started
+## 🏁 Quick Start
 
 ```python
-from kevo import Client, ClientOptions
+from kevo import Client, ClientOptions, ScanOptions
 
-# Create a client with default options
-client = Client()
-
-# Or with custom options
-options = ClientOptions(
-    endpoint="localhost:50051",
-    connect_timeout=5.0,
-    request_timeout=10.0
-)
-client = Client(options)
-
-# Connect to the server
+# Create a client
+client = Client(ClientOptions(endpoint="localhost:50051"))
 client.connect()
 
 # Basic operations
@@ -45,13 +42,11 @@ client.put(b"hello", b"world")
 value, found = client.get(b"hello")
 print(value.decode() if found else "Not found")  # Prints: world
 
-# Scan operations
-scan_options = ScanOptions(prefix=b"user:")
-scanner = client.scan(scan_options)
-for kv in scanner:
+# Scan with prefix
+for kv in client.scan(ScanOptions(prefix=b"user:")):
     print(f"Key: {kv.key.decode()}, Value: {kv.value.decode()}")
 
-# Transaction example
+# Use transactions
 tx = client.begin_transaction()
 try:
     tx.put(b"key1", b"value1")
@@ -60,49 +55,52 @@ try:
 except Exception as e:
     tx.rollback()
     raise e
-
-# Don't forget to close the connection when done
-client.close()
+finally:
+    client.close()
 ```
 
-## API Reference
+## 📖 API Reference
 
 ### Client
-
-The main client class for interacting with the Kevo server.
 
 ```python
 client = Client(options=None)
 ```
 
-#### Methods
+#### Core Methods
 
-- `connect()`: Connect to the server
-- `close()`: Close the connection
-- `is_connected()`: Check if connected to the server
-- `get(key)`: Get a value by key
-- `put(key, value, sync=False)`: Store a key-value pair
-- `delete(key, sync=False)`: Delete a key-value pair
-- `batch_write(operations, sync=False)`: Perform multiple operations in a batch
-- `scan(options=None)`: Scan keys in the database
-- `begin_transaction(read_only=False)`: Begin a new transaction
-- `get_stats()`: Get database statistics
-- `compact(force=False)`: Trigger database compaction
+| Method | Description |
+|--------|-------------|
+| `connect()` | Connect to the server |
+| `close()` | Close the connection |
+| `get(key)` | Get a value by key |
+| `put(key, value, sync=False)` | Store a key-value pair |
+| `delete(key, sync=False)` | Delete a key-value pair |
+
+#### Advanced Features
+
+| Method | Description |
+|--------|-------------|
+| `batch_write(operations, sync=False)` | Perform multiple operations in a batch |
+| `scan(options=None)` | Scan keys in the database |
+| `begin_transaction(read_only=False)` | Begin a new transaction |
+| `get_stats()` | Get database statistics |
+| `compact(force=False)` | Trigger database compaction |
 
 ### Transaction
 
-Represents a database transaction.
-
 #### Methods
 
-- `commit()`: Commit the transaction
-- `rollback()`: Roll back the transaction
-- `get(key)`: Get a value within the transaction
-- `put(key, value)`: Store a key-value pair within the transaction
-- `delete(key)`: Delete a key-value pair within the transaction
-- `scan(options=None)`: Scan keys within the transaction
+| Method | Description |
+|--------|-------------|
+| `commit()` | Commit the transaction |
+| `rollback()` | Roll back the transaction |
+| `get(key)` | Get a value within the transaction |
+| `put(key, value)` | Store a key-value pair within the transaction |
+| `delete(key)` | Delete a key-value pair within the transaction |
+| `scan(options=None)` | Scan keys within the transaction |
 
-## Development
+## 🛠️ Development
 
 ### Prerequisites
 
@@ -114,7 +112,7 @@ Represents a database transaction.
 
 ```bash
 # Install dependencies
-pip install -e .
+poetry install
 
 # Generate Protocol Buffer code
 python tools/generate_proto.py
@@ -128,6 +126,6 @@ isort kevo
 pylint kevo
 ```
 
-## License
+## 📄 License
 
 [MIT](https://opensource.org/licenses/MIT)
