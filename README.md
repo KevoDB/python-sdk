@@ -11,7 +11,7 @@ High-performance Python client for the [Kevo](https://github.com/KevoDB/kevo) ke
 - Simple and intuitive API
 - Efficient binary protocol (gRPC)
 - Transaction support
-- Range and prefix scans
+- Range, prefix, and suffix scans
 - Batch operations
 
 ## 🚀 Installation
@@ -45,6 +45,10 @@ print(value.decode() if found else "Not found")  # Prints: world
 # Scan with prefix
 for kv in client.scan(ScanOptions(prefix=b"user:")):
     print(f"Key: {kv.key.decode()}, Value: {kv.value.decode()}")
+    
+# Scan with suffix
+for kv in client.scan(ScanOptions(suffix=b".jpg")):
+    print(f"Image: {kv.key.decode()}, Description: {kv.value.decode()}")
 
 # Use transactions
 tx = client.begin_transaction()

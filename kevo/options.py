@@ -51,6 +51,7 @@ class ScanOptions:
     def __init__(
         self,
         prefix: Optional[bytes] = None,
+        suffix: Optional[bytes] = None,
         start_key: Optional[bytes] = None,
         end_key: Optional[bytes] = None,
         limit: int = 0,
@@ -60,11 +61,13 @@ class ScanOptions:
 
         Args:
             prefix: Only return keys with this prefix
+            suffix: Only return keys with this suffix
             start_key: Start scanning from this key (inclusive)
             end_key: End scanning at this key (exclusive)
             limit: Maximum number of results to return (0 means no limit)
         """
         self.prefix = prefix
+        self.suffix = suffix
         self.start_key = start_key
         self.end_key = end_key
         self.limit = limit

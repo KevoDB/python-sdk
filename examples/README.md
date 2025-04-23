@@ -35,6 +35,14 @@ Demonstrates various scan operations including full scans, prefix scans, and ran
 python examples/scan_operations.py
 ```
 
+### Suffix Scan Operations
+
+Demonstrates suffix scan operations to retrieve keys that end with specific suffixes:
+
+```
+python examples/suffix_scan_example.py
+```
+
 ### Transaction Operations
 
 Demonstrates transaction functionality including read-write transactions, read-only transactions, commit, rollback, and isolation:

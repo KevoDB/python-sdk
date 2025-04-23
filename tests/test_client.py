@@ -14,7 +14,7 @@ from kevo.client import ScanOptions
 @pytest.fixture
 def mock_grpc_stub():
     """Create a mock gRPC stub."""
-    with patch("kevo.client.service_pb2_grpc.KevoServiceStub") as mock_stub_class:
+    with patch("kevo.proto.kevo.service_pb2_grpc.KevoServiceStub") as mock_stub_class:
         mock_stub = MagicMock()
         mock_stub_class.return_value = mock_stub
         yield mock_stub
@@ -164,6 +164,36 @@ def test_batch_write(client, mock_grpc_stub):
     
     # Verify second operation (DELETE)
     assert request.operations[1].key == b"key2"
+
+
+def test_scan_with_suffix(client, mock_grpc_stub):
+    """Test scan with suffix option."""
+    # Setup mock response
+    scan_response = MagicMock()
+    scan_response.__next__ = MagicMock(side_effect=[
+        MagicMock(key=b"image1.jpg", value=b"jpg image"),
+        MagicMock(key=b"image2.jpg", value=b"jpg image"),
+        StopIteration()
+    ])
+    mock_grpc_stub.Scan.return_value = scan_response
+    
+    # Call scan with suffix option
+    scanner = client.scan(ScanOptions(suffix=b".jpg"))
+    
+    # Iterate through results
+    results = list(scanner)
+    
+    # Verify results
+    assert len(results) == 2
+    assert results[0].key == b"image1.jpg"
+    assert results[0].value == b"jpg image"
+    assert results[1].key == b"image2.jpg"
+    assert results[1].value == b"jpg image"
+    
+    # Verify request
+    mock_grpc_stub.Scan.assert_called_once()
+    request = mock_grpc_stub.Scan.call_args[0][0]
+    assert request.suffix == b".jpg"
 
 
 def test_transaction(client, mock_grpc_stub):

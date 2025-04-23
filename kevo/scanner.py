@@ -70,6 +70,7 @@ class ScanIterator(Scanner):
         # Create the request
         request = service_pb2.ScanRequest(
             prefix=options.prefix or b"",
+            suffix=options.suffix or b"",
             start_key=options.start_key or b"",
             end_key=options.end_key or b"",
             limit=options.limit,
@@ -142,6 +143,7 @@ class TransactionScanIterator(Scanner):
         request = service_pb2.TxScanRequest(
             transaction_id=tx_id,
             prefix=options.prefix or b"",
+            suffix=options.suffix or b"",
             start_key=options.start_key or b"",
             end_key=options.end_key or b"",
             limit=options.limit,

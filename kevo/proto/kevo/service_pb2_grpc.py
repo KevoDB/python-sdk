@@ -15,650 +15,487 @@ class KevoServiceStub(object):
             channel: A grpc.Channel.
         """
         self.Get = channel.unary_unary(
-            "/kevo.KevoService/Get",
-            request_serializer=proto_dot_kevo_dot_service__pb2.GetRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.GetResponse.FromString,
-        )
+                '/kevo.KevoService/Get',
+                request_serializer=proto_dot_kevo_dot_service__pb2.GetRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.GetResponse.FromString,
+                )
         self.Put = channel.unary_unary(
-            "/kevo.KevoService/Put",
-            request_serializer=proto_dot_kevo_dot_service__pb2.PutRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.PutResponse.FromString,
-        )
+                '/kevo.KevoService/Put',
+                request_serializer=proto_dot_kevo_dot_service__pb2.PutRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.PutResponse.FromString,
+                )
         self.Delete = channel.unary_unary(
-            "/kevo.KevoService/Delete",
-            request_serializer=proto_dot_kevo_dot_service__pb2.DeleteRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.DeleteResponse.FromString,
-        )
+                '/kevo.KevoService/Delete',
+                request_serializer=proto_dot_kevo_dot_service__pb2.DeleteRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.DeleteResponse.FromString,
+                )
         self.BatchWrite = channel.unary_unary(
-            "/kevo.KevoService/BatchWrite",
-            request_serializer=proto_dot_kevo_dot_service__pb2.BatchWriteRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.BatchWriteResponse.FromString,
-        )
+                '/kevo.KevoService/BatchWrite',
+                request_serializer=proto_dot_kevo_dot_service__pb2.BatchWriteRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.BatchWriteResponse.FromString,
+                )
         self.Scan = channel.unary_stream(
-            "/kevo.KevoService/Scan",
-            request_serializer=proto_dot_kevo_dot_service__pb2.ScanRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.ScanResponse.FromString,
-        )
+                '/kevo.KevoService/Scan',
+                request_serializer=proto_dot_kevo_dot_service__pb2.ScanRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.ScanResponse.FromString,
+                )
         self.BeginTransaction = channel.unary_unary(
-            "/kevo.KevoService/BeginTransaction",
-            request_serializer=proto_dot_kevo_dot_service__pb2.BeginTransactionRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.BeginTransactionResponse.FromString,
-        )
+                '/kevo.KevoService/BeginTransaction',
+                request_serializer=proto_dot_kevo_dot_service__pb2.BeginTransactionRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.BeginTransactionResponse.FromString,
+                )
         self.CommitTransaction = channel.unary_unary(
-            "/kevo.KevoService/CommitTransaction",
-            request_serializer=proto_dot_kevo_dot_service__pb2.CommitTransactionRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.CommitTransactionResponse.FromString,
-        )
+                '/kevo.KevoService/CommitTransaction',
+                request_serializer=proto_dot_kevo_dot_service__pb2.CommitTransactionRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.CommitTransactionResponse.FromString,
+                )
         self.RollbackTransaction = channel.unary_unary(
-            "/kevo.KevoService/RollbackTransaction",
-            request_serializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionResponse.FromString,
-        )
+                '/kevo.KevoService/RollbackTransaction',
+                request_serializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionResponse.FromString,
+                )
         self.TxGet = channel.unary_unary(
-            "/kevo.KevoService/TxGet",
-            request_serializer=proto_dot_kevo_dot_service__pb2.TxGetRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.TxGetResponse.FromString,
-        )
+                '/kevo.KevoService/TxGet',
+                request_serializer=proto_dot_kevo_dot_service__pb2.TxGetRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.TxGetResponse.FromString,
+                )
         self.TxPut = channel.unary_unary(
-            "/kevo.KevoService/TxPut",
-            request_serializer=proto_dot_kevo_dot_service__pb2.TxPutRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.TxPutResponse.FromString,
-        )
+                '/kevo.KevoService/TxPut',
+                request_serializer=proto_dot_kevo_dot_service__pb2.TxPutRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.TxPutResponse.FromString,
+                )
         self.TxDelete = channel.unary_unary(
-            "/kevo.KevoService/TxDelete",
-            request_serializer=proto_dot_kevo_dot_service__pb2.TxDeleteRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.TxDeleteResponse.FromString,
-        )
+                '/kevo.KevoService/TxDelete',
+                request_serializer=proto_dot_kevo_dot_service__pb2.TxDeleteRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.TxDeleteResponse.FromString,
+                )
         self.TxScan = channel.unary_stream(
-            "/kevo.KevoService/TxScan",
-            request_serializer=proto_dot_kevo_dot_service__pb2.TxScanRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.TxScanResponse.FromString,
-        )
+                '/kevo.KevoService/TxScan',
+                request_serializer=proto_dot_kevo_dot_service__pb2.TxScanRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.TxScanResponse.FromString,
+                )
         self.GetStats = channel.unary_unary(
-            "/kevo.KevoService/GetStats",
-            request_serializer=proto_dot_kevo_dot_service__pb2.GetStatsRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.GetStatsResponse.FromString,
-        )
+                '/kevo.KevoService/GetStats',
+                request_serializer=proto_dot_kevo_dot_service__pb2.GetStatsRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.GetStatsResponse.FromString,
+                )
         self.Compact = channel.unary_unary(
-            "/kevo.KevoService/Compact",
-            request_serializer=proto_dot_kevo_dot_service__pb2.CompactRequest.SerializeToString,
-            response_deserializer=proto_dot_kevo_dot_service__pb2.CompactResponse.FromString,
-        )
+                '/kevo.KevoService/Compact',
+                request_serializer=proto_dot_kevo_dot_service__pb2.CompactRequest.SerializeToString,
+                response_deserializer=proto_dot_kevo_dot_service__pb2.CompactResponse.FromString,
+                )
 
 
 class KevoServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Get(self, request, context):
-        """Key-Value Operations"""
+        """Key-Value Operations
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Put(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Delete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def BatchWrite(self, request, context):
-        """Batch Operations"""
+        """Batch Operations
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Scan(self, request, context):
-        """Iterator Operations"""
+        """Iterator Operations
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def BeginTransaction(self, request, context):
-        """Transaction Operations"""
+        """Transaction Operations
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def CommitTransaction(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def RollbackTransaction(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def TxGet(self, request, context):
-        """Transaction Operations within an active transaction"""
+        """Transaction Operations within an active transaction
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def TxPut(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def TxDelete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def TxScan(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def GetStats(self, request, context):
-        """Administrative Operations"""
+        """Administrative Operations
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Compact(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_KevoServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "Get": grpc.unary_unary_rpc_method_handler(
-            servicer.Get,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.GetRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.GetResponse.SerializeToString,
-        ),
-        "Put": grpc.unary_unary_rpc_method_handler(
-            servicer.Put,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.PutRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.PutResponse.SerializeToString,
-        ),
-        "Delete": grpc.unary_unary_rpc_method_handler(
-            servicer.Delete,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.DeleteRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.DeleteResponse.SerializeToString,
-        ),
-        "BatchWrite": grpc.unary_unary_rpc_method_handler(
-            servicer.BatchWrite,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.BatchWriteRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.BatchWriteResponse.SerializeToString,
-        ),
-        "Scan": grpc.unary_stream_rpc_method_handler(
-            servicer.Scan,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.ScanRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.ScanResponse.SerializeToString,
-        ),
-        "BeginTransaction": grpc.unary_unary_rpc_method_handler(
-            servicer.BeginTransaction,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.BeginTransactionRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.BeginTransactionResponse.SerializeToString,
-        ),
-        "CommitTransaction": grpc.unary_unary_rpc_method_handler(
-            servicer.CommitTransaction,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.CommitTransactionRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.CommitTransactionResponse.SerializeToString,
-        ),
-        "RollbackTransaction": grpc.unary_unary_rpc_method_handler(
-            servicer.RollbackTransaction,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionResponse.SerializeToString,
-        ),
-        "TxGet": grpc.unary_unary_rpc_method_handler(
-            servicer.TxGet,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.TxGetRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.TxGetResponse.SerializeToString,
-        ),
-        "TxPut": grpc.unary_unary_rpc_method_handler(
-            servicer.TxPut,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.TxPutRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.TxPutResponse.SerializeToString,
-        ),
-        "TxDelete": grpc.unary_unary_rpc_method_handler(
-            servicer.TxDelete,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.TxDeleteRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.TxDeleteResponse.SerializeToString,
-        ),
-        "TxScan": grpc.unary_stream_rpc_method_handler(
-            servicer.TxScan,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.TxScanRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.TxScanResponse.SerializeToString,
-        ),
-        "GetStats": grpc.unary_unary_rpc_method_handler(
-            servicer.GetStats,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.GetStatsRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.GetStatsResponse.SerializeToString,
-        ),
-        "Compact": grpc.unary_unary_rpc_method_handler(
-            servicer.Compact,
-            request_deserializer=proto_dot_kevo_dot_service__pb2.CompactRequest.FromString,
-            response_serializer=proto_dot_kevo_dot_service__pb2.CompactResponse.SerializeToString,
-        ),
+            'Get': grpc.unary_unary_rpc_method_handler(
+                    servicer.Get,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.GetRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.GetResponse.SerializeToString,
+            ),
+            'Put': grpc.unary_unary_rpc_method_handler(
+                    servicer.Put,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.PutRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.PutResponse.SerializeToString,
+            ),
+            'Delete': grpc.unary_unary_rpc_method_handler(
+                    servicer.Delete,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.DeleteRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.DeleteResponse.SerializeToString,
+            ),
+            'BatchWrite': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchWrite,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.BatchWriteRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.BatchWriteResponse.SerializeToString,
+            ),
+            'Scan': grpc.unary_stream_rpc_method_handler(
+                    servicer.Scan,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.ScanRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.ScanResponse.SerializeToString,
+            ),
+            'BeginTransaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.BeginTransaction,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.BeginTransactionRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.BeginTransactionResponse.SerializeToString,
+            ),
+            'CommitTransaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.CommitTransaction,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.CommitTransactionRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.CommitTransactionResponse.SerializeToString,
+            ),
+            'RollbackTransaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.RollbackTransaction,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.RollbackTransactionResponse.SerializeToString,
+            ),
+            'TxGet': grpc.unary_unary_rpc_method_handler(
+                    servicer.TxGet,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.TxGetRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.TxGetResponse.SerializeToString,
+            ),
+            'TxPut': grpc.unary_unary_rpc_method_handler(
+                    servicer.TxPut,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.TxPutRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.TxPutResponse.SerializeToString,
+            ),
+            'TxDelete': grpc.unary_unary_rpc_method_handler(
+                    servicer.TxDelete,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.TxDeleteRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.TxDeleteResponse.SerializeToString,
+            ),
+            'TxScan': grpc.unary_stream_rpc_method_handler(
+                    servicer.TxScan,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.TxScanRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.TxScanResponse.SerializeToString,
+            ),
+            'GetStats': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStats,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.GetStatsRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.GetStatsResponse.SerializeToString,
+            ),
+            'Compact': grpc.unary_unary_rpc_method_handler(
+                    servicer.Compact,
+                    request_deserializer=proto_dot_kevo_dot_service__pb2.CompactRequest.FromString,
+                    response_serializer=proto_dot_kevo_dot_service__pb2.CompactResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "kevo.KevoService", rpc_method_handlers
-    )
+            'kevo.KevoService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-# This class is part of an EXPERIMENTAL API.
+ # This class is part of an EXPERIMENTAL API.
 class KevoService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Get(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Get(request,
             target,
-            "/kevo.KevoService/Get",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/Get',
             proto_dot_kevo_dot_service__pb2.GetRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.GetResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Put(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Put(request,
             target,
-            "/kevo.KevoService/Put",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/Put',
             proto_dot_kevo_dot_service__pb2.PutRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.PutResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Delete(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Delete(request,
             target,
-            "/kevo.KevoService/Delete",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/Delete',
             proto_dot_kevo_dot_service__pb2.DeleteRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.DeleteResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def BatchWrite(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def BatchWrite(request,
             target,
-            "/kevo.KevoService/BatchWrite",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/BatchWrite',
             proto_dot_kevo_dot_service__pb2.BatchWriteRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.BatchWriteResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Scan(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_stream(
-            request,
+    def Scan(request,
             target,
-            "/kevo.KevoService/Scan",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/kevo.KevoService/Scan',
             proto_dot_kevo_dot_service__pb2.ScanRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.ScanResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def BeginTransaction(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def BeginTransaction(request,
             target,
-            "/kevo.KevoService/BeginTransaction",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/BeginTransaction',
             proto_dot_kevo_dot_service__pb2.BeginTransactionRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.BeginTransactionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CommitTransaction(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def CommitTransaction(request,
             target,
-            "/kevo.KevoService/CommitTransaction",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/CommitTransaction',
             proto_dot_kevo_dot_service__pb2.CommitTransactionRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.CommitTransactionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def RollbackTransaction(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def RollbackTransaction(request,
             target,
-            "/kevo.KevoService/RollbackTransaction",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/RollbackTransaction',
             proto_dot_kevo_dot_service__pb2.RollbackTransactionRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.RollbackTransactionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def TxGet(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def TxGet(request,
             target,
-            "/kevo.KevoService/TxGet",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/TxGet',
             proto_dot_kevo_dot_service__pb2.TxGetRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.TxGetResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def TxPut(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def TxPut(request,
             target,
-            "/kevo.KevoService/TxPut",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/TxPut',
             proto_dot_kevo_dot_service__pb2.TxPutRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.TxPutResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def TxDelete(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def TxDelete(request,
             target,
-            "/kevo.KevoService/TxDelete",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/TxDelete',
             proto_dot_kevo_dot_service__pb2.TxDeleteRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.TxDeleteResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def TxScan(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_stream(
-            request,
+    def TxScan(request,
             target,
-            "/kevo.KevoService/TxScan",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/kevo.KevoService/TxScan',
             proto_dot_kevo_dot_service__pb2.TxScanRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.TxScanResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetStats(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def GetStats(request,
             target,
-            "/kevo.KevoService/GetStats",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/GetStats',
             proto_dot_kevo_dot_service__pb2.GetStatsRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.GetStatsResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Compact(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Compact(request,
             target,
-            "/kevo.KevoService/Compact",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kevo.KevoService/Compact',
             proto_dot_kevo_dot_service__pb2.CompactRequest.SerializeToString,
             proto_dot_kevo_dot_service__pb2.CompactResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
