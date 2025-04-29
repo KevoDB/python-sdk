@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-kevo"
-version = "0.2.0"
+version = "0.3.0"
 description = "Python SDK for Kevo key-value store"
 authors = ["Jeremy Tregunna <jeremy@tregunna.ca>"]
 readme = "README.md"

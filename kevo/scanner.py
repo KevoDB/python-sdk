@@ -77,8 +77,11 @@ class ScanIterator(Scanner):
         )
 
         try:
+            # Get an appropriate stub for reading, considering replicas
+            stub = self._connection.get_read_stub(read_from_replicas=options.read_from_replicas)
+            
             # Get the response stream
-            self._iterator = self._connection.get_stub().Scan(request)
+            self._iterator = stub.Scan(request)
         except grpc.RpcError as e:
             self._error = handle_grpc_error(e, "starting scan")
 
@@ -122,7 +125,7 @@ class ScanIterator(Scanner):
 class TransactionScanIterator(Scanner):
     """Iterator for scanning keys in a transaction."""
 
-    def __init__(self, tx_id: str, connection: Connection, options: ScanOptions):
+    def __init__(self, tx_id: str, connection: Connection, options: ScanOptions, read_only: bool = False):
         """
         Initialize a transaction scan iterator.
 
@@ -130,10 +133,12 @@ class TransactionScanIterator(Scanner):
             tx_id: Transaction ID
             connection: The connection to use
             options: Scan options
+            read_only: Whether this is for a read-only transaction
         """
         self._tx_id = tx_id
         self._connection = connection
         self._options = options
+        self._read_only = read_only
         self._current = None
         self._error = None
         self._closed = False
@@ -150,8 +155,15 @@ class TransactionScanIterator(Scanner):
         )
 
         try:
+            # Get an appropriate stub based on transaction type
+            # For read-only transactions, we can use a replica if available
+            # For write transactions, we must use the primary
+            if self._read_only:
+                stub = self._connection.get_read_stub(read_from_replicas=options.read_from_replicas)
+            else:
+                stub = self._connection.get_write_stub()
+                
             # Get the response stream
-            stub = self._connection.get_stub()
             self._iterator = stub.TxScan(request)
         except grpc.RpcError as e:
             self._error = handle_grpc_error(e, "starting transaction scan")

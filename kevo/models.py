@@ -2,13 +2,13 @@
 Data models for the Kevo client.
 
 This module defines data models used throughout the Kevo client,
-including KeyValue pairs, batch operations, and statistics.
+including KeyValue pairs, batch operations, statistics, and replication info.
 """
 
 import enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 
 @dataclass
@@ -67,3 +67,52 @@ class BatchOperation:
         # Validate
         if op_type == BatchOperation.Type.PUT and value is None:
             raise ValueError("Value must be provided for PUT operations")
+
+
+class NodeRole(Enum):
+    """Role of a node in the replication topology."""
+
+    STANDALONE = "standalone"
+    PRIMARY = "primary"
+    REPLICA = "replica"
+
+
+@dataclass
+class ReplicaInfo:
+    """Information about a replica node."""
+
+    address: str
+    last_sequence: int
+    available: bool
+    region: Optional[str] = None
+    meta: Dict[str, str] = field(default_factory=dict)
+
+    def __str__(self) -> str:
+        """Return a string representation of the replica info."""
+        return (
+            f"ReplicaInfo(address={self.address}, "
+            f"last_sequence={self.last_sequence}, "
+            f"available={self.available}, "
+            f"region={self.region})"
+        )
+
+
+@dataclass
+class NodeInfo:
+    """Information about a node in the replication topology."""
+
+    node_role: NodeRole
+    primary_address: str = ""
+    replicas: List[ReplicaInfo] = field(default_factory=list)
+    last_sequence: int = 0
+    read_only: bool = False
+
+    def __str__(self) -> str:
+        """Return a string representation of the node info."""
+        return (
+            f"NodeInfo(node_role={self.node_role.value}, "
+            f"primary_address={self.primary_address}, "
+            f"replicas_count={len(self.replicas)}, "
+            f"last_sequence={self.last_sequence}, "
+            f"read_only={self.read_only})"
+        )

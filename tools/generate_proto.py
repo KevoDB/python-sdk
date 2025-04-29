@@ -16,8 +16,8 @@ def main():
     """Generate Python code from .proto files."""
     # Setup paths
     python_sdk_dir = Path(os.getcwd())
-    kevo_root = python_sdk_dir.parent
-    proto_file = kevo_root / "proto" / "kevo" / "service.proto"
+    # Use the proto file from the python-sdk directory
+    proto_file = python_sdk_dir / "proto" / "kevo" / "service.proto"
     
     # Ensure we're in the python-sdk directory
     if python_sdk_dir.name != "python-sdk":
@@ -35,7 +35,7 @@ def main():
         # Run protoc command
         cmd = [
             sys.executable, "-m", "grpc_tools.protoc",
-            f"--proto_path={kevo_root}",
+            f"--proto_path={python_sdk_dir}",
             f"--python_out={output_dir}",
             f"--grpc_python_out={output_dir}",
             str(proto_file),

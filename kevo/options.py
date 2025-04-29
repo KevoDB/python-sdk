@@ -2,12 +2,13 @@
 Configuration options for the Kevo client.
 
 This module defines configuration options for the Kevo client, including
-connection settings, security settings, and performance tuning.
+connection settings, security settings, performance tuning, and replication.
 """
 
 import enum
-from dataclasses import dataclass
-from typing import Optional
+import random
+from dataclasses import dataclass, field
+from typing import Optional, Dict, List, Union
 
 
 class CompressionType(enum.IntEnum):
@@ -16,6 +17,56 @@ class CompressionType(enum.IntEnum):
     NONE = 0
     GZIP = 1
     SNAPPY = 2
+
+
+@dataclass
+class ReplicationOptions:
+    """Options for configuring replication behavior."""
+    
+    # Topology discovery
+    discover_topology: bool = True
+    
+    # Read/write routing
+    auto_route_writes: bool = True
+    auto_route_reads: bool = True
+    
+    # Read preferences
+    read_from_replicas: bool = True
+    
+    # Replica selection strategy: "random", "sequential", "round_robin"
+    replica_selection_strategy: str = "random"
+    
+    # Connection management
+    auto_connect_to_replicas: bool = True
+    auto_connect_to_primary: bool = True
+    
+    # Retry settings for replication operations
+    replica_retry_count: int = 2
+
+
+@dataclass
+class ReadOptions:
+    """Options for read operations."""
+    
+    # Whether to use replica for this read
+    read_from_replicas: bool = True
+    
+    # Consistency requirements
+    require_max_staleness_ms: Optional[int] = None
+    
+    # Timeout specific to this read
+    timeout: Optional[float] = None
+
+
+@dataclass
+class WriteOptions:
+    """Options for write operations."""
+    
+    # Whether to sync to disk
+    sync: bool = False
+    
+    # Timeout specific to this write
+    timeout: Optional[float] = None
 
 
 @dataclass
@@ -43,6 +94,9 @@ class ClientOptions:
     # Performance options
     compression: CompressionType = CompressionType.NONE
     max_message_size: int = 16 * 1024 * 1024  # 16MB
+    
+    # Replication options
+    replication: ReplicationOptions = field(default_factory=ReplicationOptions)
 
 
 class ScanOptions:
@@ -55,6 +109,7 @@ class ScanOptions:
         start_key: Optional[bytes] = None,
         end_key: Optional[bytes] = None,
         limit: int = 0,
+        read_from_replicas: bool = True,
     ):
         """
         Initialize scan options.
@@ -65,12 +120,14 @@ class ScanOptions:
             start_key: Start scanning from this key (inclusive)
             end_key: End scanning at this key (exclusive)
             limit: Maximum number of results to return (0 means no limit)
+            read_from_replicas: Whether to read from replicas for this scan operation
         """
         self.prefix = prefix
         self.suffix = suffix
         self.start_key = start_key
         self.end_key = end_key
         self.limit = limit
+        self.read_from_replicas = read_from_replicas
         
         # Validate conflicting options
         if prefix is not None and (start_key is not None or end_key is not None):

@@ -49,7 +49,9 @@ class Transaction:
             request = service_pb2.CommitTransactionRequest(transaction_id=self._id)
 
             try:
-                stub = self._connection.get_stub()
+                # For transactions with writes, we must use the primary
+                # Even for read-only transactions, commit must go to the node that started it
+                stub = self._connection.get_write_stub()
                 response = stub.CommitTransaction(
                     request, timeout=self._connection.get_timeout()
                 )
@@ -58,7 +60,25 @@ class Transaction:
                 if not response.success:
                     raise TransactionError("Transaction commit failed")
             except grpc.RpcError as e:
-                raise handle_grpc_error(e, "committing transaction")
+                error = handle_grpc_error(e, "committing transaction")
+                
+                # If this is a read-only error, try to connect to the primary and retry
+                from .errors import ReadOnlyError
+                if isinstance(error, ReadOnlyError) and error.primary_address:
+                    self._connection.handle_read_only_error(error)
+                    
+                    # Retry the operation with the primary connection
+                    stub = self._connection.get_write_stub()
+                    response = stub.CommitTransaction(
+                        request, timeout=self._connection.get_timeout()
+                    )
+                    self._closed = True
+                    
+                    if not response.success:
+                        raise TransactionError("Transaction commit failed")
+                    return
+                    
+                raise error
 
     def rollback(self) -> None:
         """
@@ -75,7 +95,13 @@ class Transaction:
             request = service_pb2.RollbackTransactionRequest(transaction_id=self._id)
 
             try:
-                stub = self._connection.get_stub()
+                # Rollback should go to the same node that started the transaction
+                # For write transactions, this must be the primary
+                if self._read_only:
+                    stub = self._connection.get_read_stub(read_from_replicas=False)
+                else:
+                    stub = self._connection.get_write_stub()
+                    
                 response = stub.RollbackTransaction(
                     request, timeout=self._connection.get_timeout()
                 )
@@ -84,7 +110,25 @@ class Transaction:
                 if not response.success:
                     raise TransactionError("Transaction rollback failed")
             except grpc.RpcError as e:
-                raise handle_grpc_error(e, "rolling back transaction")
+                error = handle_grpc_error(e, "rolling back transaction")
+                
+                # If this is a read-only error, try to connect to the primary and retry
+                from .errors import ReadOnlyError
+                if isinstance(error, ReadOnlyError) and error.primary_address:
+                    self._connection.handle_read_only_error(error)
+                    
+                    # Retry the operation with the primary connection
+                    stub = self._connection.get_write_stub()
+                    response = stub.RollbackTransaction(
+                        request, timeout=self._connection.get_timeout()
+                    )
+                    self._closed = True
+                    
+                    if not response.success:
+                        raise TransactionError("Transaction rollback failed")
+                    return
+                    
+                raise error
 
     def get(self, key: bytes) -> Tuple[Optional[bytes], bool]:
         """
@@ -107,7 +151,13 @@ class Transaction:
             request = service_pb2.TxGetRequest(transaction_id=self._id, key=key)
 
             try:
-                stub = self._connection.get_stub()
+                # For read-only transactions, we can use a replica
+                # For write transactions, we must use the primary
+                if self._read_only:
+                    stub = self._connection.get_read_stub(read_from_replicas=True)
+                else:
+                    stub = self._connection.get_write_stub()
+                    
                 response = stub.TxGet(
                     request, timeout=self._connection.get_timeout()
                 )
@@ -142,13 +192,28 @@ class Transaction:
             )
 
             try:
-                stub = self._connection.get_stub()
+                # Write operations must go to the primary
+                stub = self._connection.get_write_stub()
                 response = stub.TxPut(
                     request, timeout=self._connection.get_timeout()
                 )
                 return response.success
             except grpc.RpcError as e:
-                raise handle_grpc_error(e, "putting key-value in transaction")
+                error = handle_grpc_error(e, "putting key-value in transaction")
+                
+                # If this is a read-only error, try to connect to the primary and retry
+                from .errors import ReadOnlyError
+                if isinstance(error, ReadOnlyError) and error.primary_address:
+                    self._connection.handle_read_only_error(error)
+                    
+                    # Retry the operation with the primary connection
+                    stub = self._connection.get_write_stub()
+                    response = stub.TxPut(
+                        request, timeout=self._connection.get_timeout()
+                    )
+                    return response.success
+                    
+                raise error
 
     def delete(self, key: bytes) -> bool:
         """
@@ -174,13 +239,28 @@ class Transaction:
             request = service_pb2.TxDeleteRequest(transaction_id=self._id, key=key)
 
             try:
-                stub = self._connection.get_stub()
+                # Write operations must go to the primary
+                stub = self._connection.get_write_stub()
                 response = stub.TxDelete(
                     request, timeout=self._connection.get_timeout()
                 )
                 return response.success
             except grpc.RpcError as e:
-                raise handle_grpc_error(e, "deleting key in transaction")
+                error = handle_grpc_error(e, "deleting key in transaction")
+                
+                # If this is a read-only error, try to connect to the primary and retry
+                from .errors import ReadOnlyError
+                if isinstance(error, ReadOnlyError) and error.primary_address:
+                    self._connection.handle_read_only_error(error)
+                    
+                    # Retry the operation with the primary connection
+                    stub = self._connection.get_write_stub()
+                    response = stub.TxDelete(
+                        request, timeout=self._connection.get_timeout()
+                    )
+                    return response.success
+                    
+                raise error
 
     def scan(self, options: Optional[ScanOptions] = None) -> Scanner:
         """
@@ -201,7 +281,7 @@ class Transaction:
         if options is None:
             options = ScanOptions()
 
-        return TransactionScanIterator(self._id, self._connection, options)
+        return TransactionScanIterator(self._id, self._connection, options, self._read_only)
     
     def is_read_only(self) -> bool:
         """Check if this is a read-only transaction."""

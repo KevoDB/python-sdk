@@ -1,16 +1,24 @@
 """
 Kevo Python SDK - Client for the Kevo key-value store
 
-This package provides a Pythonic interface to interact with a Kevo server.
+This package provides a Pythonic interface to interact with a Kevo server,
+including support for replication.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __author__ = "Kevo Team"
 __email__ = "info@example.com"
 
 from .client import Client
-from .models import KeyValue, Stats, BatchOperation
-from .options import ClientOptions, ScanOptions, CompressionType
+from .models import KeyValue, Stats, BatchOperation, NodeInfo, ReplicaInfo, NodeRole
+from .options import (
+    ClientOptions, 
+    ScanOptions, 
+    CompressionType, 
+    ReplicationOptions,
+    ReadOptions,
+    WriteOptions
+)
 from .scanner import Scanner
 from .transaction import Transaction
 from .errors import (
@@ -20,6 +28,9 @@ from .errors import (
     KeyNotFoundError,
     ScanError,
     ValidationError,
+    ReplicationError,
+    ReadOnlyError,
+    ReplicaReadError,
 )
 
 __all__ = [
@@ -30,11 +41,17 @@ __all__ = [
     "ClientOptions",
     "ScanOptions",
     "CompressionType",
+    "ReplicationOptions",
+    "ReadOptions",
+    "WriteOptions",
     
     # Data models
     "KeyValue",
     "Stats",
     "BatchOperation",
+    "NodeInfo",
+    "ReplicaInfo",
+    "NodeRole",
     
     # Iterators
     "Scanner",
@@ -49,4 +66,7 @@ __all__ = [
     "KeyNotFoundError",
     "ScanError",
     "ValidationError",
+    "ReplicationError",
+    "ReadOnlyError",
+    "ReplicaReadError",
 ]

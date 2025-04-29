@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="kevo",
-    version="0.1.0",
+    version="0.3.0",
     author="Kevo Team",
     author_email="info@example.com",
     description="Python SDK for Kevo key-value store",
