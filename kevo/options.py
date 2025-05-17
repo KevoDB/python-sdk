@@ -75,8 +75,8 @@ class ClientOptions:
 
     # Connection options
     endpoint: str = "localhost:50051"
-    connect_timeout: float = 5.0  # seconds
-    request_timeout: float = 10.0  # seconds
+    connect_timeout: float = 10.0  # seconds
+    request_timeout: float = 30.0  # seconds
 
     # Security options
     tls_enabled: bool = False
@@ -90,6 +90,13 @@ class ClientOptions:
     max_backoff: float = 2.0  # seconds
     backoff_factor: float = 1.5
     retry_jitter: float = 0.2
+    
+    # Auto-reconnection options
+    auto_reconnect: bool = True
+    reconnect_max_attempts: int = 5
+    reconnect_backoff_factor: float = 2.0
+    reconnect_initial_delay: float = 1.0  # seconds
+    reconnect_max_delay: float = 30.0  # seconds
 
     # Performance options
     compression: CompressionType = CompressionType.NONE

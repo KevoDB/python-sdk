@@ -8,8 +8,9 @@ It also handles connection management for replication topology.
 
 import logging
 import random
+import time
 import grpc
-from typing import List, Optional, Tuple, Any, Dict, Iterator, Set
+from typing import List, Optional, Tuple, Any, Dict, Iterator, Set, Callable
 
 from .errors import handle_grpc_error, ConnectionError, ReplicationError, ReadOnlyError
 from .options import ClientOptions
@@ -118,7 +119,17 @@ class ReplicaConnection:
             ConnectionError: If not connected
         """
         if not self.is_connected():
-            raise ConnectionError(f"Not connected to replica at {self.address}")
+            # Try to reconnect if auto_reconnect is enabled in options
+            if self._options.auto_reconnect:
+                logger.info(f"Connection to replica at {self.address} lost. Attempting to reconnect...")
+                try:
+                    self.connect()
+                    logger.info(f"Reconnection to replica at {self.address} successful")
+                except Exception as e:
+                    logger.warning(f"Failed to reconnect to replica at {self.address}: {e}")
+                    raise ConnectionError(f"Not connected to replica at {self.address} and reconnection failed")
+            else:
+                raise ConnectionError(f"Not connected to replica at {self.address}")
         return self._stub
     
     def _test_connection(self) -> None:
@@ -237,10 +248,21 @@ class Connection:
         Raises:
             ConnectionError: If not connected
         """
-        self.check_connection()
-        if self._primary_conn is not None:
-            return self._primary_conn.get_stub()
-        return self._stub
+        try:
+            self.check_connection()
+            if self._primary_conn is not None:
+                return self._primary_conn.get_stub()
+            return self._stub
+        except ConnectionError:
+            # Attempt to reconnect if auto_reconnect is enabled
+            if self._options.auto_reconnect:
+                logger.info("Connection lost. Attempting to reconnect...")
+                if self._try_reconnect():
+                    logger.info("Reconnection successful")
+                    # Try getting the stub again after reconnection
+                    return self.get_stub()
+            # If reconnection failed or is disabled, raise the original error
+            raise ConnectionError("Not connected to any server and reconnection failed")
 
     def get_timeout(self) -> float:
         """Get the request timeout in seconds."""
@@ -344,6 +366,55 @@ class Connection:
         
         return False
     
+    def _try_reconnect(self) -> bool:
+        """
+        Attempt to reconnect to the server with exponential backoff.
+        
+        Returns:
+            True if reconnection was successful, False otherwise
+        """
+        # Reset connection state
+        was_connected_to_primary = self._primary_conn is not None
+        was_connected_to_replicas = bool(self._replica_conns)
+        
+        # Close all current connections
+        self.close()
+        
+        # Try to reconnect with exponential backoff
+        delay = self._options.reconnect_initial_delay
+        for attempt in range(self._options.reconnect_max_attempts):
+            try:
+                logger.debug(f"Reconnection attempt {attempt + 1}/{self._options.reconnect_max_attempts}")
+                
+                # Connect to the initial endpoint
+                self._connect_to_endpoint(self._options.endpoint)
+                
+                # Discover replication topology if enabled
+                if self._options.replication.discover_topology:
+                    self._discover_topology()
+                
+                # If we were previously connected to primary/replicas, try to reconnect to them
+                if was_connected_to_primary and self._primary_conn is None and self._node_info and self._node_info.primary_address:
+                    try:
+                        self._connect_to_primary(self._node_info.primary_address)
+                    except Exception as e:
+                        logger.warning(f"Failed to reconnect to primary: {e}")
+                
+                # Reconnection successful
+                return True
+                
+            except Exception as e:
+                logger.warning(f"Reconnection attempt {attempt + 1} failed: {e}")
+                
+                # Sleep with exponential backoff before retrying
+                if attempt < self._options.reconnect_max_attempts - 1:  # Don't sleep after the last attempt
+                    jitter = random.uniform(0, self._options.retry_jitter * delay)
+                    time.sleep(delay + jitter)
+                    delay = min(delay * self._options.reconnect_backoff_factor, self._options.reconnect_max_delay)
+        
+        # All reconnection attempts failed
+        return False
+
     def get_read_stub(self, read_from_replicas: Optional[bool] = None) -> service_pb2_grpc.KevoServiceStub:
         """
         Get a stub for read operations, considering replication routing.
@@ -358,20 +429,32 @@ class Connection:
         Raises:
             ConnectionError: If not connected
         """
-        self.check_connection()
-        
-        # Check if we should route to a replica
-        if self.should_route_to_replica(read_from_replicas):
-            replica_stub = self.get_available_replica_stub()
-            if replica_stub is not None:
-                return replica_stub
-        
-        # Fall back to the primary connection
-        if self._primary_conn is not None:
-            return self._primary_conn.get_stub()
-        
-        # Fall back to the direct connection
-        return self._stub
+        try:
+            self.check_connection()
+            
+            # Check if we should route to a replica
+            if self.should_route_to_replica(read_from_replicas):
+                replica_stub = self.get_available_replica_stub()
+                if replica_stub is not None:
+                    return replica_stub
+            
+            # Fall back to the primary connection
+            if self._primary_conn is not None:
+                return self._primary_conn.get_stub()
+            
+            # Fall back to the direct connection
+            return self._stub
+            
+        except ConnectionError:
+            # Attempt to reconnect if auto_reconnect is enabled
+            if self._options.auto_reconnect:
+                logger.info("Connection lost. Attempting to reconnect...")
+                if self._try_reconnect():
+                    logger.info("Reconnection successful")
+                    # Try getting the stub again after reconnection
+                    return self.get_read_stub(read_from_replicas)
+            # If reconnection failed or is disabled, raise the original error
+            raise ConnectionError("Not connected to any server and reconnection failed")
     
     def get_write_stub(self) -> service_pb2_grpc.KevoServiceStub:
         """
@@ -383,14 +466,26 @@ class Connection:
         Raises:
             ConnectionError: If not connected
         """
-        self.check_connection()
-        
-        # Check if we should route to the primary
-        if self.should_route_to_primary():
-            return self._primary_conn.get_stub()
-        
-        # Fall back to the direct connection
-        return self._stub
+        try:
+            self.check_connection()
+            
+            # Check if we should route to the primary
+            if self.should_route_to_primary():
+                return self._primary_conn.get_stub()
+            
+            # Fall back to the direct connection
+            return self._stub
+            
+        except ConnectionError:
+            # Attempt to reconnect if auto_reconnect is enabled
+            if self._options.auto_reconnect:
+                logger.info("Connection lost. Attempting to reconnect...")
+                if self._try_reconnect():
+                    logger.info("Reconnection successful")
+                    # Try getting the stub again after reconnection
+                    return self.get_write_stub()
+            # If reconnection failed or is disabled, raise the original error
+            raise ConnectionError("Not connected to any server and reconnection failed")
     
     def handle_read_only_error(self, error: ReadOnlyError) -> None:
         """
@@ -623,6 +718,22 @@ def _create_grpc_options(options: ClientOptions) -> List[Tuple[str, Any]]:
                 ),
             ]
         )
+    
+    # Add keep-alive parameters to prevent premature socket closures
+    channel_options.extend([
+        # Send keepalive pings every 30 seconds
+        ("grpc.keepalive_time_ms", 30000),
+        # Keepalive ping timeout after 10 seconds
+        ("grpc.keepalive_timeout_ms", 10000),
+        # Allow keepalive pings even when there's no active streams
+        ("grpc.keepalive_permit_without_calls", 1),
+        # Allow up to 5 pings without data
+        ("grpc.http2.max_pings_without_data", 5),
+        # Minimum time between pings
+        ("grpc.http2.min_time_between_pings_ms", 10000),
+        # Minimum ping interval without data
+        ("grpc.http2.min_ping_interval_without_data_ms", 5000),
+    ])
 
     return channel_options
 
