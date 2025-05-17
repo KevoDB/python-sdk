@@ -1,29 +1,49 @@
-[tool.poetry]
-name = "python-kevo"
-version = "0.3.0"
-description = "Python SDK for Kevo key-value store"
-authors = ["Jeremy Tregunna <jeremy@tregunna.ca>"]
-readme = "README.md"
-packages = [{include = "kevo"}]
-
-[tool.poetry.dependencies]
-python = "^3.8"
-grpcio = "^1.59.0"
-grpcio-tools = "^1.59.0"
-protobuf = "^4.24.0"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
-black = "^24.3.0"
-isort = "^5.12.0"
-mypy = "^1.5.1"
-pylint = "^2.17.5"
-grpc-stubs = "^1.53.0"
-
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "python-kevo"
+version = "0.3.0"
+description = "Python SDK for Kevo key-value store"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT License"}
+authors = [
+    {name = "Jeremy Tregunna", email = "jeremy@tregunna.ca"}
+]
+maintainers = [
+    {name = "Kevo Team", email = "info@example.com"}
+]
+keywords = ["kevo", "key-value", "database"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+]
+dependencies = [
+    "grpcio>=1.59.0",
+    "grpcio-tools>=1.59.0",
+    "protobuf>=4.24.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/KevoDB/python-sdk"
+Repository = "https://github.com/KevoDB/python-sdk"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=24.3.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.1",
+    "pylint>=2.17.5",
+    "grpc-stubs>=1.53.0",
+]
+
+[tool.poetry]
+packages = [{include = "kevo"}]
 
 [tool.black]
 line-length = 88

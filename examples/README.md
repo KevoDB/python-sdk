@@ -51,6 +51,22 @@ Demonstrates transaction functionality including read-write transactions, read-o
 python examples/transaction_operations.py
 ```
 
+### Database Statistics
+
+Demonstrates how to retrieve and display database statistics:
+
+```
+python examples/get_stats.py
+```
+
+### List Replicas
+
+Shows how to get node role information and list replica details:
+
+```
+python examples/list_replicas.py
+```
+
 ## Usage Notes
 
 - All examples run against a Kevo server at `localhost:50051` by default
