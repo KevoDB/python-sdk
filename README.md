@@ -25,7 +25,7 @@ Or install from source:
 ```bash
 git clone https://github.com/KevoDB/python-sdk.git
 cd python-sdk
-poetry install
+uv sync
 ```
 
 ## 🏁 Quick Start
@@ -45,7 +45,7 @@ print(value.decode() if found else "Not found")  # Prints: world
 # Scan with prefix
 for kv in client.scan(ScanOptions(prefix=b"user:")):
     print(f"Key: {kv.key.decode()}, Value: {kv.value.decode()}")
-    
+
 # Scan with suffix
 for kv in client.scan(ScanOptions(suffix=b".jpg")):
     print(f"Image: {kv.key.decode()}, Description: {kv.value.decode()}")
